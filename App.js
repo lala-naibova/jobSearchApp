@@ -1,19 +1,39 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
+import storage from './src/store/Index'
+import { Notifications } from 'expo'
+import { Alert } from 'react-native'
 
-export default function App() {
+import registeredNatification from './src/services/push_natifications'
+import JobNavigation from './src/navigation/JobNavigation'
+
+export default class App extends React.Component {
+  // componentDidMount(){
+  //   registeredNatification();
+  //   Notifications.addListener((notification)=>{
+  //     const { data : { text }, origin } = notification;
+  //     console.log(notification);
+      
+  //     //const text = notification.data.text
+  //     if (origin === 'received' && text) {
+  //         Alert.alert(
+  //         'New push notification',
+  //         text,
+  //         [{text : 'Ok.'}]
+  //       )
+  //     }
+  //   })
+  // }
+render(){
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <Provider store={storage.store}>
+      <PersistGate loading={null} persistor={storage.persistStorage}>
+        <JobNavigation/>
+      </PersistGate>  
+    </Provider>
+      
   );
 }
+}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
